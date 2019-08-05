@@ -1,0 +1,159 @@
+{
+    "editDialogTitle":"采购订单",
+     "width":"700px",
+     "labelWidth":"80px",
+     "editTableData":{
+      "height":"200px",
+      "columns":[{
+          "prop": "index",
+          "label": "#",
+          "fixed": "fixed",
+          "width": "50px",
+          "type": "index"
+        },
+        {
+          "prop": "code",
+          "label": "产品编号",
+          "width": "160",
+          "fixed": "fixed"
+        },{
+          "prop": "qty",
+          "label": "数量"
+        }, {
+          "prop": "price",
+          "label": "单价"
+        },{
+          "prop": "codeName",
+          "label": "名称"
+        }],
+      "data":[]
+     },
+     "toolsFormItems":{
+        "form":[{
+          "type":"input",
+          "value":"",
+          "label":"产品编号",
+          "inputStyle":{"width":"150px","marginRight":"5px"},        
+          "name":"code"
+        },{
+          "type":"inputNumber",
+          "value":"",
+          "min":1,
+          "label":"数量",
+          "inputStyle":{"width":"78px","marginRight":"5px"},
+          "name":"qty"
+        },{
+          "type":"inputNumber",
+          "value":"",
+          "label":"单价",
+          "min":0,
+          "inputStyle":{"width":"78px"},
+          "name":"price"
+        },{
+          "type":"button",
+          "buttons":[{
+            "text": "提交",
+            "size": "mini",
+            "disabled": true,
+            "key":"submit"
+          },
+          {
+            "text": "取消",
+            "size": "mini",
+            "disabled": true,
+            "key":"cancel"
+          },
+          {
+            "text": "删除",
+            "size": "mini",
+            "disabled": true,
+            "key":"delete"
+          }]
+        }]
+     },
+     "formItems": {
+      "form":[{
+        "type":"input",
+        "value":"",
+        "label":"单号",
+        "name":"formno",
+        "style": {
+          "width":"50%"
+        },
+        "readonly":true
+      },
+      {
+        "type":"date",
+        "value":"",
+        "label":"日期",
+        "name":"billDateTime",
+        "inputStyle":{"width":"178px"},
+        "style": {
+          "width":"50%"
+        }
+      },
+      {
+        "type":"autocomplete",
+        "value":"",
+        "label":"供应商",
+        "placeholder":"供应商编号",
+        "data":[],
+
+        "name":"supplierID",
+        "inputStyle":{"width":"178px"},
+        "style": {
+          "width":"50%"
+        }
+      },
+      {
+        "type":"input",
+        "value":"",
+        "label":"合同号",
+        "name":"contractNo",
+        "inputStyle":{"width":"178px"},
+        "style": {
+          "width":"50%"
+        }
+      },{
+        "type": "select",
+        "value": "",
+        "label": "支付方式",
+        
+        "options": [],
+        "inputStyle":{"width":"178px"},
+        "name": "payment",
+        "style": {
+          "width":"50%"
+        }
+      },{
+        "type": "autocomplete",
+        "value":"",
+        "label": "采购员",
+        "placeholder":"采购员编号",
+        "data":[],
+        
+        "name": "buyer",
+        "style": {
+          "width":"50%"
+        }
+      },{
+        "type": "input",
+        "value":"",
+        "label": "制单员",
+        "name": "lister",
+        "readonly":true,
+        "style": {
+          "width":"50%"
+        }
+      },{
+        "type": "input",
+        "value":"",
+        "label": "描述",
+        "name": "description",
+        "style": {
+          "width":"50%"
+        }
+      }
+    ]
+  }
+}

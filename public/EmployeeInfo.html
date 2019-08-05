@@ -1,0 +1,664 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>cool-elements dist</title>
+    <!-- <link rel="stylesheet" href="ziyuan/element-ui/theme-chalk/index.css"> -->
+    <!-- <script src="ziyuan/vue.js"></script> -->
+    <script src="https://cdn.bootcss.com/vue/2.6.10/vue.min.js"></script>
+    <!-- <script src="ziyuan/element-ui/index.js"></script> -->
+    <link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
+    <script src="https://unpkg.com/element-ui/lib/index.js"></script>
+    <script src="dist/cool-elements.umd.min.js"></script>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <script ></script>
+</head>
+
+<body>
+    <div id="root" v-cloak>
+    <!-- <cool-views ref="viewTable" :buttons="buttons" @button-click="buttonsevent" :origin-condition="originCondition" @get-condition="getCondition"  :hdr-table-data="hdrTableData" @hdr-select-change="selection" @hdr-row-click="handleRowClick" @hdr-page-size-change="paginationSizeChange" @hdr-pagination-current-change="paginationCurrentChange"></cool-views> -->
+    <cool-master-view :unique-deploy-key="uniqueDeployKey" :axios-setting="axiosSetting"></cool-master-view>
+    <cool-master-dialog :unique-key="uniqueKey" :visible.sync="dialogVisible"></cool-master-dialog>
+  </div>
+</body>
+<script >
+  window.onload = function(){
+    /**
+*
+* @authors Your Name (you@example.org)
+* @date    2019-01-04 15:02:30
+* @version $Id$
+*/
+window.vm = new Vue({
+  el: '#root',
+  data: {
+    // url
+     saveUrl:'EmployeeInfo/Save',
+     newItemUrl:'EmployeeInfo/NewItem',
+     getDataUrl: 'EmployeeInfo/GetList',
+     delUrl:'EmployeeInfo',
+     uniqueKey:'http://198.168.1.98:97/api/PurOrder',
+     axiosSetting:{
+                  baseURL:'http://198.168.1.98:8096/api/',
+                  // name:'cool-token',
+                  // value:'00000000-0000-0000-0000-000000000000'
+          },
+     uniqueDeployKey:{
+        api:'http://198.168.1.98:97/api/PurOrder',
+        buttons:'Emp_button',
+        modeList:'Emp_modeList',
+        queryCondition:'Emp_query',
+        hdrTableData:'Emp_table',
+        dltTableData:'Emp_dltTable'
+       },
+     // new & edit dialog
+     dialogTitle:'员工档案',
+     dialogVisible:false,
+     width:'650px',
+     labelWidth:'80px',
+     formItems: {
+      form:[{
+        type: 'input',
+        value: '',
+        label: '编号',
+        name: 'cardID',
+        style: {
+          width: '50%'
+        },
+        rules:{
+          required:true,
+          message:'编号不能为空',
+          trigger:'change'
+        }
+      },
+      {
+        type: 'input',
+        value: '',
+        label: '姓名',
+        name: 'name',
+        disabled: false,
+        style: {
+          width: '50%'
+        },
+        rules:{
+          required:true,
+          message:'姓名不能为空',
+          trigger:'change'
+        }
+      },
+      {
+        type: 'select',
+        value: '',
+        label: '性别',
+        name: 'sex',
+        inputStyle:{width:'178px'},
+        options: [{
+                    value: '男',
+                    label: '男'
+                  }, {
+                    value: '女',
+                    label: '女'
+                  }],
+        style: {
+          width: '50%'
+        }
+      },
+      {
+        type: 'radio',
+        value: '',
+        label: '是否可用',
+        radioItems:[{
+          value:'可用',
+          label:'可用',
+        }],
+        name: 'zip',
+        style: {
+          width: '50%'
+        }
+      },{
+        type: 'select',
+        value: '',
+        label: '部门',
+        name: 'departmentName',
+        options:[],
+        inputStyle:{width:'178px'},
+        style: {
+          width: '50%'
+        }
+      },{
+        type: 'select',
+        value: '',
+        label: '岗位',
+        options: [{
+                    value: '总经理',
+                    label: '总经理'
+                  }, {
+                    value: '部门经理',
+                    label: '部门经理'
+                  },{
+                    value: '技术员（技术）',
+                    label: '技术员（技术）'
+                  },{
+                    value: '科员',
+                    label: '科员'
+                  },{
+                    value: '场长',
+                    label: '场长'
+                  }],
+        inputStyle:{width:'178px'},
+        name: 'pos',
+        style: {
+          width: '50%'
+        }
+      },{
+        type: 'input',
+        value: '',
+        label: '员工卡',
+        name: 'cardID',
+        style: {
+          width: '50%'
+        }
+      },{
+        type: 'input',
+        value: '',
+        label: '身份证',
+        name: 'ic',
+        style: {
+          width: '50%'
+        }
+      },{
+        type: 'input',
+        value: '',
+        label: '电话',
+        name: 'telephone',
+        style: {
+          width: '50%'
+        }
+      },{
+        type: 'input',
+        value: '',
+        label: '手机',
+        name: 'phone',
+        style: {
+          width: '50%'
+        }
+      },{
+        type: 'input',
+        value: '',
+        label: '邮编',
+        name: 'zip',
+        style: {
+          width: '50%'
+        }
+      },{
+        type: 'input',
+        value: '',
+        label: '地址',
+        name: 'address',
+        style: {
+          width: '50%'
+        }
+      }
+    ]},
+      // cool view 主表数据
+     hdrTableData:{
+      cellStyle: {
+        height: '30px',
+        padding: '5px 0'
+        },
+      stripe:true,
+      showPage:false,
+      data: [],
+      total: 0,
+      currentPage: 1,
+      pageSize: 10,
+      layout: 'total, sizes, prev, pager, next, jumper',
+      columns: [{
+          type: 'selection'
+        }, {
+          type: 'index',
+          prop: 'index',
+          label: '序号',
+          fixed: 'fixed',
+          width: '50px'
+        },
+        {
+          prop: "departmentName",
+          label: "部门",
+          width: '160',
+          fixed: 'fixed'
+        }, {
+          prop: "name",
+          label: "姓名"
+        }, {
+          prop: "sexName",
+          label: "性别"
+        }, {
+          prop: "posName",
+          label: "职位"
+        }, {
+          prop: "zip",
+          label: "邮编"
+        }, {
+          prop: "phone",
+          label: "手机"
+        },{
+          prop: "telephone",
+          label: "电话"
+        },{
+          prop: "ic",
+          label: "身份证"
+        },{
+          prop: "address",
+          label: "地址"
+        }
+        ]
+            },
+    //button 
+    buttons: [{
+        text: '查询',
+        size: 'mini',
+        icon: 'el-icon-search',
+        disabled: false
+      },
+      {
+        text: '新建',
+        size: 'mini',
+        icon: 'el-icon-plus',
+        disabled: false
+      },
+      {
+        text: '编辑',
+        size: 'mini',
+        icon: 'el-icon-edit',
+        disabled: true
+      },
+      {
+        text: '删除',
+        size: 'mini',
+        icon: 'el-icon-delete',
+        disabled: true
+      },
+      {
+        text: '审核',
+        size: 'mini',
+        icon: 'el-icon-upload2',
+        disabled: false
+      },{
+        text: '打印',
+        size: 'mini',
+        icon: 'el-icon-upload2',
+        disabled: false
+      },
+      {
+        text: '导出',
+        size: 'mini',
+        icon: 'el-icon-download',
+        disabled: false
+      },{
+        text: '统计',
+        size: 'mini',
+        icon: 'el-icon-upload2',
+        disabled: false
+      },{
+        text: '同步',
+        size: 'mini',
+        icon: 'el-icon-upload2',
+        disabled: false
+      }
+    ],
+    condition:[],
+    formItemsData:null,
+    currentData:null,
+    newItemData:null,
+    ids:String,
+    isEdit:false,
+    // 查询条件
+    originCondition: {
+        code: {
+              value: '',
+              mode: '等于',
+              dataType: 'string',
+              fieldName: 'Code',
+              tableRelationMode: 'AND',
+              tableName:"[InfoTable]",
+              name: '编码',
+              form: 'input'
+        },
+        name: {
+              value: '',
+              mode: '等于',
+              dataType: 'string',
+              fieldName: 'Name',
+              tableRelationMode: 'AND',
+              tableName:"[InfoTable]",
+              name: '姓名',
+              form: 'input'
+        },
+        department: {
+              value: '',
+              mode: '等于',
+              dataType: 'string',
+              fieldName: 'Department',
+              tableRelationMode: 'AND',
+              tableName:"[InfoTable]",
+              name: '部门',
+              form: 'input'
+        },
+        card: {
+          value: '',
+          mode: '等于',
+          dataType: 'string',
+          fieldName: 'Pos',
+          tableRelationMode: 'AND',
+          tableName:"[InfoTable]",
+          name: '员工卡',
+          form: 'input'
+        },
+        idCard: {
+              value: '',
+              mode: '等于',
+              dataType: 'string',
+              fieldName: 'idCard',
+              tableRelationMode: 'AND',
+              tableName:"[InfoTable]",
+              name: '身份证',
+              form: 'input'
+        },
+        post: {
+              value: '',
+              mode: '等于',
+              dataType: 'string',
+              fieldName: 'Pos',
+              tableRelationMode: 'AND',
+              tableName:"[InfoTable]",
+              name: '岗位',
+              form: 'select',
+                  options: [{
+                    value: '总经理',
+                    label: '总经理'
+                  }, {
+                    value: '部门经理',
+                    label: '部门经理'
+                  },{
+                    value: '技术员（技术）',
+                    label: '技术员（技术）'
+                  },{
+                    value: '科员',
+                    label: '科员'
+                  },{
+                    value: '场长',
+                    label: '场长'
+                  }]
+            },
+        sex: {
+              value: '',
+              mode: '等于',
+              dataType: 'string',
+              fieldName: 'Sex',
+              tableRelationMode: 'AND',
+              tableName:"[InfoTable]",
+              name: '性别',
+              form: 'select',
+              options: [{
+                value: '男',
+                label: '男'
+              }, {
+                value: '女',
+                label: '女'
+              }]
+        },
+        tel: {
+              value: '',
+              mode: '等于',
+              dataType: 'string',
+              fieldName: 'Telephone',
+              tableRelationMode: 'AND',
+              tableName:"[InfoTable]",
+              name: '电话',
+              form: 'input'
+        },phone: {
+              value: '',
+              mode: '等于',
+              dataType: 'string',
+              fieldName: 'Phone',
+              tableRelationMode: 'AND',
+              tableName:"[InfoTable]",
+              name: '手机',
+              form: 'input'
+        },address: {
+              value: '',
+              mode: '等于',
+              dataType: 'string',
+              fieldName: 'Address',
+              tableRelationMode: 'AND',
+              tableName:"[InfoTable]",
+              name: '地址',
+              form: 'input'
+        },
+        postcode: {
+              value: '',
+              mode: '等于',
+              dataType: 'string',
+              fieldName: 'Postcode',
+              tableRelationMode: 'AND',
+              tableName:"[InfoTable]",
+              name: '邮编',
+              form: 'input'
+        }
+      }          
+  },
+  mounted() {
+    this.setAxios()
+    this.$el.style.visibility = 'visible'
+  },
+  methods: {
+    setAxios(){
+      // set baseURL
+      axios.defaults.baseURL = 'http://198.168.1.98:8096/api/';
+      // 'cool-token': '00000000-0000-0000-0000-000000000000'
+      axios.defaults.headers.common['cool-token'] = '00000000-0000-0000-0000-000000000000';
+      // 拦截器
+      axios.interceptors.response.use(function (response) {
+        // 在发送请求之前做些什么
+        console.log(response)
+        // 判断是否有total 有就显示分页
+        if(response.data.hasOwnProperty('total') && window.hasOwnProperty('vm') && window.vm.hasOwnProperty('hdrTableData')){
+          // 这里判断不严谨 先写着
+            window.vm.hdrTableData.showPage = true
+            window.vm.hdrTableData.total = response.data.total
+        }
+        if(response.data.state == 'success'){
+            return Promise.resolve(response.data.rows);
+        }else{
+          alert(response.data.message)
+        }
+      }, function (error) {
+        alert(error)
+        // 对请求错误做些什么
+        return Promise.reject(error);
+      });
+    },
+    // 关闭新建/编辑弹窗
+    dialogclose(){
+      this.$refs.formItems.$refs.coolForm.resetForm()
+      this.formItems.form.forEach(item=>{
+         item.value =  ''
+      })
+              
+    },
+    // 新建编辑保存方法
+    saveData(){  
+      if(this.$refs.formItems.$refs.coolForm.validateForm()){
+        // 判断编辑还是新建
+          this.isEdit ? this.formItemsData = Object.assign(this.currentData,this.formItemsData) : this.formItemsData = Object.assign(this.newItemData,this.formItemsData)
+          for(i in this.formItemsData){
+            if(i == 'posName') this.formItemsData[i] = this.formItemsData.pos             
+            if(i == 'sexName') this.formItemsData[i] = this.formItemsData.sex       
+          }  
+          console.log(this.formItemsData)
+            axios.post(this.saveUrl,this.formItemsData).then(res=>{
+            console.log(res)
+            if(this.isEdit){
+              // 编辑 根据当前数据的id 在表格数据中找到它所在的索引 然后将编辑好的数据替换
+              let currentDataIndex =  this.hdrTableData.data.findIndex(item=>{
+              return  item.id == res.id
+            })
+            console.log(currentDataIndex)
+            this.hdrTableData.data[currentDataIndex] = Object.assign( this.hdrTableData.data[currentDataIndex],res)
+            }else{
+              // 新建 直接push进去表格数据中 感觉新建完的数据应该在第一条 
+                this.hdrTableData.data.push(res)
+           }
+            this.formItemsData = null
+            this.dialogVisible = false;
+          })
+      } 
+    },
+    // 新建编辑弹窗更新数据方法
+    updataForm(arg) {
+      this.formItemsData = arg
+      console.log(arg);
+    },
+    //获取传出的查询参数
+    getCondition: function(arg) {
+      this.condition = arg
+      console.log(this.condition)
+    },
+    // 删除数据
+    delTab() {
+        // let delUrl = 'http://198.168.1.98:8096/api/EmployeeInfo'
+        axios({
+            method:"delete",
+            url:this.delUrl,
+            data:this.currentData             
+          }).then(res=>{
+            console.log(res)
+            this.getData()
+          })
+    },
+    // 表格点击事件
+    handleRowClick(arg) {
+      console.log(arg)
+    },
+    // 分页
+    paginationSizeChange(arg) {
+      console.log(arg)
+      this.hdrTableData.currentPage = 1
+      this.hdrTableData.pageSize = arg
+      this.getData()
+    },
+    paginationCurrentChange(arg) {
+        console.log(arg)
+      this.hdrTableData.currentPage = arg
+      this.getData()
+    },
+    // 表格多选操作
+    selection(arg) {
+       this.buttons[2].disabled = arg.length !== 1
+       this.buttons[3].disabled = arg.length !== 1       
+       if (arg.length != 0) {
+        this.currentData = arg[0]
+        this.ids = arg[0].id
+      }else{
+       this.currentData = null
+      }
+      console.log(this.currentData,arg)
+    },
+    // 获取数据
+    getData(){
+      // let arr = [{"FieldName":"Pos","TableName":"[InfoTable]","Value":[{"value":"总经理"}],"TableRelationMode":"AND","Mode":"等于","DataType":"string"},
+      //            {"FieldName":"Sex","TableName":"[InfoTable]","Value":[{"value":"男"}],"TableRelationMode":"AND","Mode":"等于","DataType":"string"}];
+      // let url = 'http://198.168.1.98:8096/api/EmployeeInfo/GetList?condition='+JSON.stringify(this.condition);
+    //   let url = 'http://198.168.1.98:8096/api/EmployeeInfo/GetList'
+    //   axios.get(url,{
+    //   params:{
+    //     condition:JSON.stringify(this.condition)
+    //   },  
+    //   headers:{
+    //      'cool-token': '00000000-0000-0000-0000-000000000000'
+    //     }
+    //   }).then(res => {
+    //       console.log(res)
+    //       this.hdrTableData.data = res.data.rows
+    //     })
+    // .catch((error) => {
+    //   console.log(error)
+    //   })
+
+      // 判断是否有分页 传不同的参数
+      let param
+      this.hdrTableData.showPage ? param = { 
+        condition:JSON.stringify(this.condition),page:JSON.stringify(this.hdrTableData.currentPage),size:JSON.stringify(this.hdrTableData.pageSize) 
+      } : param ={
+        condition:JSON.stringify(this.condition)
+      };
+      axios.get(this.getDataUrl,{
+      params:param
+      }).then(res => {
+          console.log(res)
+          this.hdrTableData.data = res
+        })
+    },
+    // 新建数据时 获取到原始数据格式
+    getNewItem(){
+      axios.get(this.newItemUrl)
+      .then(res => {
+        this.newItemData = res
+        console.log(this.newItemData)
+        })
+    },
+    // 按钮点击事件
+    buttonsevent: function(args) {
+      switch (args.currentTarget.textContent) {
+        case '查询':
+          {
+            console.log('cao')
+            // this.getAllData()
+            this.getData()
+            break
+          }
+        case '新建':
+          { 
+            // this.getNewItem()
+            this.dialogVisible = true
+            this.isEdit = false
+            break
+          }
+        case '编辑':
+          {  
+             //将选中编辑数据映射到表单 
+             // this.formItems.form.forEach(item=>{
+             //   for( i  in this.currentData){
+             //    if(i == item.name){
+             //      item.value = this.currentData[i]
+             //    }
+             //   }
+             // })
+             this.dialogVisible = true
+             this.isEdit = true
+            break
+          }
+        case '删除':
+          {
+            this.delTab()
+            console.log('删除操作');
+            break
+          }
+        case '导出':
+          {
+            console.log('导出操作');
+            break
+          }
+        default:
+          console.log("！未知错误！")
+          break
+      }
+    },
+  }
+})
+  }
+</script>
+
+</html>

@@ -1,0 +1,54 @@
+﻿{
+  "dltTableData":[
+               {
+                "showPage":false,
+                "label":"测试页面",
+                "name":"first",
+                "data": [],
+                      "cellRow": {
+                       "height": "30px",
+                       "padding": "5px 0"
+                     },
+                 "columns": [{
+                      "prop": "index",
+                      "label": "#",
+                      "fixed": "fixed",
+                      "width": "50px",
+                      "type": "index"
+                    },
+                    {
+                      "prop": "sn",
+                      "label": "序号",
+                      "width": "160",
+                      "fixed": "fixed"
+                    },
+                    {
+                      "prop": "code",
+                      "label": "产品编号",
+                      "width": "160",
+                      "fixed": "fixed"
+                    },{
+                      "prop": "qty",
+                      "label": "数量"
+                    }, {
+                      "prop": "leave",
+                      "label": "剩余"
+                    },{
+                      "prop": "price",
+                      "label": "单价"
+                    }, {
+                      "prop": "amount",
+                      "label": "总金额"
+                    },{
+                      "prop": "",
+                      "label": "结余"
+                    },{
+                      "prop": "codeName",
+                      "label": "名称"
+                    },{
+                      "prop": "tag",
+                      "label": "冲减"
+                    }
+                  ]             
+                            }]
+}

@@ -1,0 +1,67 @@
+﻿{
+	"hdrTableData":{
+      "cellStyle": {
+        "height": "30px",
+        "padding": "5px 0"
+        },
+      "height":"500px",    
+      "stripe":true,
+      "data": [],
+      "total": 0,
+      "currentPage": 1,
+      "pageSize": 10,
+      "layout": "total, sizes, prev, pager, next, jumper",
+      "columns": [{
+          "type": "selection"
+        }, {
+          "type": "index",
+          "prop": "index",
+          "label": "序号",
+          "fixed": "fixed",
+          "width": "50px"
+        },
+        {
+          "prop": "formno",
+          "label": "单号",
+          "width": "160",
+          "fixed": "fixed"
+        }, {
+          "prop": "billDateTime",
+          "label": "日期"
+        }, {
+          "prop": "supplierID",
+          "label": "供应商"
+        }, {
+          "prop": "lister",
+          "label": "制单员"
+        }, {
+          "prop": "buyer",
+          "label": "采购员"
+        }, {
+          "prop": "payment",
+          "label": "支付方式"
+        },{
+          "prop": "aPay",
+          "label": "应付款"
+        },{
+          "prop": "hPay",
+          "label": "已付款"
+        },{
+          "prop": "checkState",
+          "label": "审核状态"
+        },{
+          "prop": "checker",
+          "label": "审核员"
+        },{
+          "prop": "checkDate",
+          "label": "审核日期"
+        },{
+          "prop": "contractNo",
+          "label": "合同号"
+        },{
+          "prop": "description",
+          "label": "描述"
+        }
+        ]
+            }
+}
